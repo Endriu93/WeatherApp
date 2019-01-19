@@ -10,17 +10,33 @@ import android.support.test.espresso.matcher.ViewMatchers.withText
 import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
 import com.wegrzyn_a.weatherapp.R
+import com.wegrzyn_a.weatherapp.any
 import com.wegrzyn_a.weatherapp.runOnView
 import junit.framework.Assert.assertNotNull
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.test.KoinTest
+import org.koin.test.declare
+import org.mockito.Mock
+import org.mockito.Mockito.verify
+import org.mockito.MockitoAnnotations
 
 @RunWith(AndroidJUnit4::class)
-class WeatherActivityUnitTest{
+class WeatherActivityUnitTest : KoinTest {
 
     @get:Rule
-    val activityRule = ActivityTestRule(WeatherActivity::class.java)
+    val activityRule = object : ActivityTestRule<WeatherActivity>(WeatherActivity::class.java){
+        override fun beforeActivityLaunched() {
+            super.beforeActivityLaunched()
+            MockitoAnnotations.initMocks(this@WeatherActivityUnitTest)
+            declare { factory(override = true) { presenter } }
+        }
+    }
+
+    @Mock
+    lateinit var presenter: MVP.Presenter
 
     @Test
     fun testShowTemp() {
@@ -44,5 +60,10 @@ class WeatherActivityUnitTest{
     @Test
     fun testPresenterInjected() {
         assertNotNull((activityRule.activity as MVP.View).presenter)
+    }
+
+    @Test
+    fun testPresenterSubscribed() {
+        verify((activityRule.activity as MVP.View).presenter).subscribe(any())
     }
 }

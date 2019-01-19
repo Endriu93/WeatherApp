@@ -16,6 +16,11 @@ class WeatherActivity : AppCompatActivity(), MVP.View {
         setContentView(R.layout.activity_weather)
     }
 
+    override fun onStart() {
+        super.onStart()
+        presenter.subscribe(this)
+    }
+
     override fun showTempForToday(temp: String) {
         today_temp.text = temp
     }
