@@ -5,8 +5,11 @@ import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import com.wegrzyn_a.weatherapp.R
 import kotlinx.android.synthetic.main.activity_weather.*
+import org.koin.android.ext.android.inject
 
 class WeatherActivity : AppCompatActivity(), MVP.View {
+
+    override val presenter: MVP.Presenter by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

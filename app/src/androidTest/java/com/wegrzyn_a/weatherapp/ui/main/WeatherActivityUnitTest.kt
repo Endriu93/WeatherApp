@@ -11,6 +11,7 @@ import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
 import com.wegrzyn_a.weatherapp.R
 import com.wegrzyn_a.weatherapp.runOnView
+import junit.framework.Assert.assertNotNull
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -38,5 +39,10 @@ class WeatherActivityUnitTest{
         runOnView(activityRule.activity as MVP.View) { it.showError(error) }
 
         onView(withText(error)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    fun testPresenterInjected() {
+        assertNotNull((activityRule.activity as MVP.View).presenter)
     }
 }
