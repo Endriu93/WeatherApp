@@ -3,6 +3,7 @@ package com.wegrzyn_a.weatherapp.ui.main
 interface MVP {
     interface View {
         fun showTempForToday(temp: String)
+        fun showError(error: String)
     }
 
     interface Presenter {
@@ -11,7 +12,7 @@ interface MVP {
     }
 
     interface Interactor {
-        fun getTemps(): List<String>
+        fun getTemps(onSuccess: (List<String>) -> Unit)
         fun unSubscribe()
     }
 }
