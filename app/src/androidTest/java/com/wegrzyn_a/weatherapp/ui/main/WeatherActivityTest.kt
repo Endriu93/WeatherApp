@@ -1,4 +1,4 @@
-package com.wegrzyn_a.weatherapp
+package com.wegrzyn_a.weatherapp.ui.main
 
 import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.assertion.ViewAssertions
@@ -6,7 +6,8 @@ import android.support.test.espresso.matcher.ViewMatchers.withId
 import android.support.test.espresso.matcher.ViewMatchers.withText
 import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
-import com.wegrzyn_a.weatherapp.ui.main.WeatherActivity
+import com.wegrzyn_a.weatherapp.R
+import com.wegrzyn_a.weatherapp.getJson
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
