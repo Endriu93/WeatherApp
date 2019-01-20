@@ -1,0 +1,165 @@
+{
+  "consolidated_weather": [
+    {
+      "id": 5146843822424064,
+      "weather_state_name": "Snow",
+      "weather_state_abbr": "sn",
+      "wind_direction_compass": "WNW",
+      "created": "2019-01-18T11:51:15.309362Z",
+      "applicable_date": "2019-01-18",
+      "min_temp": -0.94,
+      "max_temp": 3.0749999999999997,
+      "the_temp": 1.7,
+      "wind_speed": 9.323026197629842,
+      "wind_direction": 281.50324245311384,
+      "air_pressure": 1007.825,
+      "humidity": 84,
+      "visibility": 14.955161854768154,
+      "predictability": 90
+    },
+    {
+      "id": 5607453160898560,
+      "weather_state_name": "Light Rain",
+      "weather_state_abbr": "lr",
+      "wind_direction_compass": "W",
+      "created": "2019-01-18T11:51:18.412636Z",
+      "applicable_date": "2019-01-19",
+      "min_temp": -3.79,
+      "max_temp": -0.30499999999999994,
+      "the_temp": -0.7100000000000001,
+      "wind_speed": 5.47685683912617,
+      "wind_direction": 260.0287725055563,
+      "air_pressure": 1021.835,
+      "humidity": 81,
+      "visibility": 15.397267458045016,
+      "predictability": 75
+    },
+    {
+      "id": 6366698420568064,
+      "weather_state_name": "Light Rain",
+      "weather_state_abbr": "lr",
+      "wind_direction_compass": "SW",
+      "created": "2019-01-18T11:51:22.029532Z",
+      "applicable_date": "2019-01-20",
+      "min_temp": -5.84,
+      "max_temp": -0.92,
+      "the_temp": -2.575,
+      "wind_speed": 1.9556320725204805,
+      "wind_direction": 233.25341575181548,
+      "air_pressure": 1019.25,
+      "humidity": 77,
+      "visibility": 13.685389823431162,
+      "predictability": 75
+    },
+    {
+      "id": 5004020389249024,
+      "weather_state_name": "Light Rain",
+      "weather_state_abbr": "lr",
+      "wind_direction_compass": "W",
+      "created": "2019-01-18T11:51:24.909111Z",
+      "applicable_date": "2019-01-21",
+      "min_temp": -3.285,
+      "max_temp": -1.0550000000000002,
+      "the_temp": -1.105,
+      "wind_speed": 3.504383518669636,
+      "wind_direction": 268.0064297614647,
+      "air_pressure": 1022.985,
+      "humidity": 83,
+      "visibility": 12.705798138869005,
+      "predictability": 75
+    },
+    {
+      "id": 5152514924085248,
+      "weather_state_name": "Light Rain",
+      "weather_state_abbr": "lr",
+      "wind_direction_compass": "SSE",
+      "created": "2019-01-18T11:51:27.136910Z",
+      "applicable_date": "2019-01-22",
+      "min_temp": -6.535,
+      "max_temp": -2.19,
+      "the_temp": -2.425,
+      "wind_speed": 5.729040907733502,
+      "wind_direction": 157.16837150285525,
+      "air_pressure": 1014.11,
+      "humidity": 66,
+      "visibility": 14.937763461385508,
+      "predictability": 75
+    },
+    {
+      "id": 5865850137477120,
+      "weather_state_name": "Light Cloud",
+      "weather_state_abbr": "lc",
+      "wind_direction_compass": "ENE",
+      "created": "2019-01-18T11:51:30.235258Z",
+      "applicable_date": "2019-01-23",
+      "min_temp": -7.369999999999999,
+      "max_temp": -1.995,
+      "the_temp": -5.46,
+      "wind_speed": 5.459332895888013,
+      "wind_direction": 78.0,
+      "air_pressure": 1012.63,
+      "humidity": 69,
+      "visibility": 9.997862483098704,
+      "predictability": 70
+    }
+  ],
+  "time": "2019-01-18T14:00:24.672259+01:00",
+  "sun_rise": "2019-01-18T07:35:38.188946+01:00",
+  "sun_set": "2019-01-18T15:57:22.705795+01:00",
+  "timezone_name": "LMT",
+  "parent": {
+    "title": "Poland",
+    "location_type": "Country",
+    "woeid": 23424923,
+    "latt_long": "51.918919,19.134300"
+  },
+  "sources": [
+    {
+      "title": "BBC",
+      "slug": "bbc",
+      "url": "http://www.bbc.co.uk/weather/",
+      "crawl_rate": 180
+    },
+    {
+      "title": "Forecast.io",
+      "slug": "forecast-io",
+      "url": "http://forecast.io/",
+      "crawl_rate": 480
+    },
+    {
+      "title": "HAMweather",
+      "slug": "hamweather",
+      "url": "http://www.hamweather.com/",
+      "crawl_rate": 360
+    },
+    {
+      "title": "Met Office",
+      "slug": "met-office",
+      "url": "http://www.metoffice.gov.uk/",
+      "crawl_rate": 180
+    },
+    {
+      "title": "OpenWeatherMap",
+      "slug": "openweathermap",
+      "url": "http://openweathermap.org/",
+      "crawl_rate": 360
+    },
+    {
+      "title": "World Weather Online",
+      "slug": "world-weather-online",
+      "url": "http://www.worldweatheronline.com/",
+      "crawl_rate": 360
+    },
+    {
+      "title": "Yahoo",
+      "slug": "yahoo",
+      "url": "http://weather.yahoo.com/",
+      "crawl_rate": 180
+    }
+  ],
+  "title": "Warsaw",
+  "location_type": "City",
+  "woeid": 523920,
+  "latt_long": "52.235352,21.009390",
+  "timezone": "Europe/Warsaw"
+}

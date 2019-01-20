@@ -12,8 +12,7 @@ class InteractorImpl(
 ) : MVP.Interactor {
 
     override fun getTemps(onSuccess: (List<String>) -> Unit) {
-        val lattLong = locationProvider.getLattLong()
-        dataSource.getStations(lattLong.first, lattLong.second)
+        dataSource.getStations(locationProvider.getLatLng())
             .map { it.get(0).woeid }
             .flatMap { dataSource.getMeasurements(it) }
             .map { measurement -> measurement.consolidated_weather.map { it.the_temp } }

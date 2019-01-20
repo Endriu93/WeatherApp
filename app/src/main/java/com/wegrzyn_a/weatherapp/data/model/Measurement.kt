@@ -1,6 +1,6 @@
 package com.wegrzyn_a.weatherapp.data.model
 
-data class Measurement(val consolidated_weather: List<Weather>)
+data class Measurement(val consolidated_weather: List<Weather>, val woeid: Int)
 
 /*
 "consolidated_weather": [
