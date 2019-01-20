@@ -30,6 +30,17 @@ android {
             java.srcDirs += "$projectDir/src/testShared"
         }
     }
+
+    testOptions {
+        unitTests.all {
+            // All the usual Gradle options.
+            testLogging {
+                events "passed", "skipped", "failed", "standardOut", "standardError"
+                outputs.upToDateWhen {false}
+                showStandardStreams = true
+            }
+        }
+    }
 }
 
 dependencies {
@@ -41,10 +52,12 @@ dependencies {
 
     // espresso
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    testImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test:rules:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
     // mockito
+    implementation "org.mockito:mockito-core:$mockito_version"
     testImplementation "org.mockito:mockito-core:$mockito_version"
     androidTestImplementation "org.mockito:mockito-core:$mockito_version"
     androidTestImplementation "org.mockito:mockito-android:$mockito_version"
@@ -61,5 +74,10 @@ dependencies {
     // mock web
     testImplementation group: 'com.squareup.okhttp3', name: 'mockwebserver', version: '3.12.1'
     androidTestImplementation group: 'com.squareup.okhttp3', name: 'mockwebserver', version: '3.12.1'
+
+    // retrofit
+    implementation 'com.google.code.gson:gson:2.8.2'
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
 
 }
