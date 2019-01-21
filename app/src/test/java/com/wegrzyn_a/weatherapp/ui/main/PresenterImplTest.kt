@@ -5,6 +5,7 @@ import com.wegrzyn_a.weatherapp.data.model.Weather
 import com.wegrzyn_a.weatherapp.mockInteractorGetTemps
 import com.wegrzyn_a.weatherapp.net.IconUrlFactory
 import com.wegrzyn_a.weatherapp.ui.main.adapter.WeatherAdapterItem
+import com.wegrzyn_a.weatherapp.ui.main.adapter.WeatherAdapterItemBuilder
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Before
@@ -23,14 +24,14 @@ class PresenterImplTest {
     lateinit var interactor: MVP.Interactor
 
     @Mock
-    lateinit var iconUrlFactory: IconUrlFactory
+    lateinit var weatherAdapterItemBuilder: WeatherAdapterItemBuilder
 
     lateinit var presenter: PresenterImpl
 
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        presenter = PresenterImpl(interactor,iconUrlFactory)
+        presenter = PresenterImpl(interactor,weatherAdapterItemBuilder)
     }
 
     @Test
@@ -52,13 +53,15 @@ class PresenterImplTest {
     fun testWeathersForNextDaysInvokedAfterSubscribe() {
         val temp = "1"
         val weather_state_abbr = "sn"
+        val date = "2019-01-18"
         val generatedIconUrl = "generatedIconUrl"
-        mockInteractorGetTemps(interactor,listOf(Weather(temp,weather_state_abbr)))
-        `when`(iconUrlFactory.getIconUrl(ArgumentMatchers.anyString())).thenReturn(generatedIconUrl)
+        mockInteractorGetTemps(interactor,listOf(Weather(temp,weather_state_abbr,date)))
+        val weatherAdapterItem = WeatherAdapterItem("","","")
+        `when`(weatherAdapterItemBuilder.buildWeatherAdapterItem(any())).thenReturn(weatherAdapterItem)
 
         presenter.subscribe(view)
 
-        verify(view).showWeathers(listOf(WeatherAdapterItem(temp,generatedIconUrl)))
+        verify(view).showWeathers(listOf(weatherAdapterItem))
     }
 
     @Test

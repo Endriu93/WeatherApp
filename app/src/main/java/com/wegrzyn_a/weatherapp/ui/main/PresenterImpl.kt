@@ -1,14 +1,16 @@
 package com.wegrzyn_a.weatherapp.ui.main
 
 import android.util.Log
-import com.wegrzyn_a.weatherapp.net.IconUrlFactory
 import com.wegrzyn_a.weatherapp.sensor.LocationNotObtainedException
-import com.wegrzyn_a.weatherapp.ui.main.adapter.WeatherAdapterItem
+import com.wegrzyn_a.weatherapp.ui.main.adapter.WeatherAdapterItemBuilder
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.exceptions.CompositeException
 
 
-class PresenterImpl(val interactor: MVP.Interactor, val iconUrlFactory: IconUrlFactory) :
+class PresenterImpl(
+    val interactor: MVP.Interactor,
+    val weatherAdapterItemBuilder: WeatherAdapterItemBuilder
+) :
     MVP.Presenter {
 
     companion object {
@@ -24,18 +26,13 @@ class PresenterImpl(val interactor: MVP.Interactor, val iconUrlFactory: IconUrlF
         val subscription = interactor.getTempsForNextDays().subscribe(
             { weather_list ->
                 if (weather_list.size > 0) {
-                    this._view?.showWeathers(weather_list.map { weather ->
-                        WeatherAdapterItem(
-                            weather.the_temp,
-                            iconUrlFactory.getIconUrl(weather.weather_state_abbr)
-                        )
-                    })
+                    this._view?.showWeathers(weather_list.map { weather -> weatherAdapterItemBuilder.buildWeatherAdapterItem(weather) })
                 } else
                     this._view?.showError("empty weather list")
             },
             {
-                val exception = if(it is CompositeException) it.exceptions.last() else it
-                val error = when(exception){
+                val exception = if (it is CompositeException) it.exceptions.last() else it
+                val error = when (exception) {
                     is LocationNotObtainedException -> "Couldn't get current location!"
                     else -> "internal error"
                 }

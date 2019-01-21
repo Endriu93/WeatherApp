@@ -7,11 +7,11 @@ import android.support.test.espresso.matcher.ViewMatchers
 import android.support.test.espresso.matcher.ViewMatchers.*
 import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
-import com.wegrzyn_a.weatherapp.R
-import com.wegrzyn_a.weatherapp.any
-import com.wegrzyn_a.weatherapp.mockWeatherAdapterItems
+import com.wegrzyn_a.weatherapp.*
+import com.wegrzyn_a.weatherapp.data.model.Weather
 import com.wegrzyn_a.weatherapp.net.IconUrlFactory
-import com.wegrzyn_a.weatherapp.runOnView
+import com.wegrzyn_a.weatherapp.ui.main.adapter.WeatherAdapterItem
+import com.wegrzyn_a.weatherapp.ui.main.adapter.WeatherAdapterItemBuilder
 import junit.framework.Assert.assertNotNull
 import org.hamcrest.CoreMatchers.`is`
 import org.junit.Rule
@@ -42,17 +42,7 @@ class WeatherActivityUnitTest : KoinTest {
 
     @Test
     fun testShowTemperatureForNextDays() {
-        val iconUrlFactory: IconUrlFactory = get()
-        val adapterItems = mockWeatherAdapterItems(
-            iconUrlFactory, listOf(
-                "1.7" to "sn",
-                "-3.79" to "lr",
-                "-2.575" to "lr",
-                "-1.105" to "lr",
-                "-2.425" to "lr",
-                "-5.46" to "lc"
-            )
-        )
+        val adapterItems = mockAdapterItemsFromLocalFile(this)
 
         runOnView(activityRule.activity as MVP.View) { it.showWeathers(adapterItems) }
 
@@ -64,17 +54,7 @@ class WeatherActivityUnitTest : KoinTest {
 
     @Test
     fun testShowIconForNextDaysWith3sDelay() {
-        val iconUrlFactory: IconUrlFactory = get()
-        val adapterItems = mockWeatherAdapterItems(
-            iconUrlFactory, listOf(
-                "1.7" to "sn",
-                "-3.79" to "lr",
-                "-2.575" to "lr",
-                "-1.105" to "lr",
-                "-2.425" to "lr",
-                "-5.46" to "lc"
-            )
-        )
+        val adapterItems = mockAdapterItemsFromLocalFile(this)
 
         runOnView(activityRule.activity as MVP.View) { it.showWeathers(adapterItems) }
         Thread.sleep(3000)

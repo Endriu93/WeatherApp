@@ -23,6 +23,7 @@ class WeatherAdapter(var items: List<WeatherAdapterItem>) :
     override fun getItemCount() = items.size
 
     override fun onBindViewHolder(viewHolder: ViewHolder, index: Int) {
+        viewHolder.date.text = items.get(index).date
         viewHolder.temp.text = items.get(index).temp
         val iconUrl = items.get(index).iconUrl
         Picasso.get().load(iconUrl).into(viewHolder.icon, object : Callback {
@@ -37,6 +38,7 @@ class WeatherAdapter(var items: List<WeatherAdapterItem>) :
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val date = view.item_date
         val temp = view.item_temp
         val icon = view.item_icon
     }
