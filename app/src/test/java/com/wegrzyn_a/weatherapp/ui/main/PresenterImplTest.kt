@@ -1,13 +1,13 @@
 package com.wegrzyn_a.weatherapp.ui.main
 
 import com.wegrzyn_a.weatherapp.any
+import com.wegrzyn_a.weatherapp.mockInteractorGetTemps
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
-import org.mockito.Mockito.doAnswer
-import org.mockito.Mockito.verify
+import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
 
 class PresenterImplTest {
@@ -28,39 +28,38 @@ class PresenterImplTest {
 
     @Test
     fun testSubscribe() {
-        assertNull(presenter.view)
+        mockInteractorGetTemps(interactor,emptyList<String>())
+
+        assertNull(presenter._view)
         presenter.subscribe(view)
-        assertNotNull(presenter.view)
+        assertNotNull(presenter._view)
     }
 
     @Test
     fun testUnSubscribe() {
         presenter.unSubscribe()
-        assertNull(presenter.view)
+        assertNull(presenter._view)
     }
 
     @Test
     fun testActionOnSubscribe() {
         val temp = "1"
-        mockInteractorGetTemps(listOf(temp))
+        mockInteractorGetTemps(interactor,listOf(temp))
 
         presenter.subscribe(view)
 
         verify(view).showTempForToday(temp)
     }
 
+
+
     @Test
     fun testInteractorReturnsEmptyList() {
-        mockInteractorGetTemps(emptyList())
+        mockInteractorGetTemps(interactor,emptyList<String>())
 
         presenter.subscribe(view)
 
         verify(view).showError(any())
     }
 
-    private fun mockInteractorGetTemps(temps: List<String>) {
-        doAnswer { (it.arguments[0] as (List<String>)->Unit).invoke(temps) }.`when`(
-            interactor
-        ).getTemps(any(), any())
-    }
 }

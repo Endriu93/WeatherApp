@@ -4,6 +4,7 @@ import android.util.Log
 import com.wegrzyn_a.weatherapp.data.DataSource
 import com.wegrzyn_a.weatherapp.sensor.LocationProvider
 import io.reactivex.Scheduler
+import io.reactivex.Single
 
 class InteractorImpl(
     val dataSource: DataSource,
@@ -12,24 +13,15 @@ class InteractorImpl(
     val observeScheduler: Scheduler
 ) : MVP.Interactor {
 
-    override fun getTemps(
-        onSuccess: (List<String>) -> Unit,
-        onError: (String) -> Unit
-    ) {
-        locationProvider.getLatLng { latlng ->
-            dataSource.getStations(latlng)
-                .map { it.get(0).woeid }
-                .flatMap { dataSource.getMeasurements(it) }
-                .map { measurement -> measurement.consolidated_weather.map { it.the_temp } }
-                .subscribeOn(subscribeScheduler)
-                .observeOn(observeScheduler)
-                .subscribe(
-                    { onSuccess.invoke(it); println("OK");  },
-                    { onError.invoke(it.message ?: ""); println("ERROR"); Log.d("Interactor:getTemps", it.toString()); })
-        }
+    override fun getTempsForNextDays(): Single<List<String>> = locationProvider.getLatLng()
+        .flatMap { dataSource.getStations(it) }
+        .map { it.get(0).woeid }
+        .flatMap { dataSource.getMeasurements(it) }
+        .map { measurement -> measurement.consolidated_weather.map { it.the_temp } }
+        .subscribeOn(subscribeScheduler)
+        .observeOn(observeScheduler)
 
-    }
-
-    override fun unSubscribe() {
-    }
+    override fun unSubscribe() {}
 }
+
+

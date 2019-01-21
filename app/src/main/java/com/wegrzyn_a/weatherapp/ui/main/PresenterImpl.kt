@@ -1,22 +1,33 @@
 package com.wegrzyn_a.weatherapp.ui.main
 
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.internal.subscriptions.ArrayCompositeSubscription
+import org.reactivestreams.Subscription
+
+
 class PresenterImpl(val interactor: MVP.Interactor) : MVP.Presenter {
 
-    var view: MVP.View? = null
+    var _view: MVP.View? = null
+    var subscriptions = CompositeDisposable()
 
-    override fun subscribe(_view: MVP.View) {
-        this.view = _view
+    override fun subscribe(view: MVP.View) {
+        this._view = view
 
-        interactor.getTemps(
-            onSuccess = {
-                if (it.size > 0)
-                    view?.showTempForToday(it.get(0))
-                else view?.showError("Couldn't load temperatures")
-            },
-            onError = { view?.showError(it) })
+        val subscription = interactor.getTempsForNextDays().subscribe(
+                {
+                    if (it.size > 0)
+                        this._view?.showTempForToday(it.get(0))
+                    else
+                        this._view?.showError("empty temperature list")
+                },
+                {
+                    this._view?.showError(it.message ?: "internal error")
+                })
+        subscriptions.add(subscription)
     }
 
     override fun unSubscribe() {
-        this.view = null
+        this._view = null
+        subscriptions.clear()
     }
 }

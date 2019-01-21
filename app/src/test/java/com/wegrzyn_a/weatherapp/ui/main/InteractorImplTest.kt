@@ -51,11 +51,11 @@ class InteractorImplTest {
         val long = 19.93658
         val woeid = 523920
         val temp = "3"
-        mockLocation(locationProvider,long, latt)
+        mockLocation(locationProvider,latt,long)
         mockDataSourceStations(dataSource,latt, long, listOf(Station("...",woeid)))
         mockDataSourceMeasurement(dataSource,woeid, Measurement(listOf(Weather(temp)),woeid))
 
-        interactor.getTemps(onSuccess,onError)
+        interactor.getTempsForNextDays().subscribe({onSuccess(it)},{})
         scheduler.triggerActions()
 
         verify(onSuccess).invoke(listOf(temp))

@@ -1,5 +1,7 @@
 package com.wegrzyn_a.weatherapp.ui.main
 
+import io.reactivex.Single
+
 interface MVP {
     interface View {
         val presenter: Presenter
@@ -13,10 +15,7 @@ interface MVP {
     }
 
     interface Interactor {
-        fun getTemps(
-            onSuccess: (List<String>) -> Unit,
-            onError: (String) -> Unit
-        )
+        fun getTempsForNextDays(): Single<List<String>>
         fun unSubscribe()
     }
 }

@@ -42,6 +42,11 @@ android {
             }
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -85,5 +90,8 @@ dependencies {
 
     // location
     implementation "com.google.android.gms:play-services-location:16.0.0"
+    implementation "com.google.android.gms:play-services-places:16.0.0"
+    implementation group: 'pl.charmas.android', name: 'android-reactive-location2', version: '2.1'
+
 
 }

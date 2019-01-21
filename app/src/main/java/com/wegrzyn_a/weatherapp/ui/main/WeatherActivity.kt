@@ -66,4 +66,9 @@ class WeatherActivity : AppCompatActivity(), MVP.View {
             }
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.unSubscribe()
+    }
 }

@@ -56,7 +56,7 @@ class WeatherActivityTest : KoinTest {
         val long = 20.0
         mockWebServer(
             mockServer,
-            listOf(
+            pathToFileList = listOf(
                 "/api/location/search/?lattlong=$latt,$long" to "api_location_search_50_19.json",
                 "/api/location/$woeid" to "api_location_523920.json"
             )

@@ -5,18 +5,17 @@ import com.wegrzyn_a.weatherapp.data.model.LatLng
 import com.wegrzyn_a.weatherapp.data.model.Measurement
 import com.wegrzyn_a.weatherapp.data.model.Station
 import com.wegrzyn_a.weatherapp.sensor.LocationProvider
+import com.wegrzyn_a.weatherapp.ui.main.MVP
 import io.reactivex.Single
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
 import org.mockito.Mockito
-import org.mockito.Mockito.doAnswer
+import org.mockito.Mockito.`when`
 
-fun mockLocation(locationProvider: LocationProvider, long: Double, latt: Double) {
-    doAnswer { (it.arguments[0] as (LatLng)->Unit).invoke(LatLng(latt, long)) }.`when`(
-        locationProvider
-    ).getLatLng(any())
+fun mockLocation(locationProvider: LocationProvider, latt: Double, long: Double) {
+    `when`(locationProvider.getLatLng()).thenReturn(Single.just(LatLng(latt, long)))
 }
 
 fun mockDataSourceStations(
@@ -38,6 +37,10 @@ fun mockDataSourceMeasurement(dataSource: DataSource, woeid: Int, measurement: M
             measurement
         )
     )
+}
+
+fun mockInteractorGetTemps(interactor: MVP.Interactor, temps: List<String>) {
+    `when`(interactor.getTempsForNextDays()).thenReturn(Single.just(temps))
 }
 
 fun mockWebServer(mockServer: MockWebServer, pathToFileList: List<Pair<String, String>>) {
