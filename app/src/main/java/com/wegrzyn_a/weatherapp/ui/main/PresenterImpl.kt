@@ -4,14 +4,16 @@ class PresenterImpl(val interactor: MVP.Interactor) : MVP.Presenter {
 
     var view: MVP.View? = null
 
-    override fun subscribe(view: MVP.View) {
-        this.view = view
+    override fun subscribe(_view: MVP.View) {
+        this.view = _view
 
-        interactor.getTemps {
-            if (it.size > 0) view.showTempForToday(it.get(0)) else view.showError(
-                "Couldn't load temperatures"
-            )
-        }
+        interactor.getTemps(
+            onSuccess = {
+                if (it.size > 0)
+                    view?.showTempForToday(it.get(0))
+                else view?.showError("Couldn't load temperatures")
+            },
+            onError = { view?.showError(it) })
     }
 
     override fun unSubscribe() {

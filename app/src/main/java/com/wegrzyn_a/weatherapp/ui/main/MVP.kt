@@ -13,7 +13,10 @@ interface MVP {
     }
 
     interface Interactor {
-        fun getTemps(onSuccess: (List<String>) -> Unit)
+        fun getTemps(
+            onSuccess: (List<String>) -> Unit,
+            onError: (String) -> Unit
+        )
         fun unSubscribe()
     }
 }

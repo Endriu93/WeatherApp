@@ -11,9 +11,12 @@ import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
 import org.mockito.Mockito
+import org.mockito.Mockito.doAnswer
 
 fun mockLocation(locationProvider: LocationProvider, long: Double, latt: Double) {
-    Mockito.`when`(locationProvider.getLatLng()).thenReturn(LatLng(latt, long))
+    doAnswer { (it.arguments[0] as (LatLng)->Unit).invoke(LatLng(latt, long)) }.`when`(
+        locationProvider
+    ).getLatLng(any())
 }
 
 fun mockDataSourceStations(

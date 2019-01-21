@@ -27,7 +27,7 @@ task clean(type: Delete) {
 }
 
 ext {
-    mockito_version = '2.23.4'
+    mockito_version = '2.22.0'
     rx_version = '2.1.0'
     koin_version = '1.0.2'
 }

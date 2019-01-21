@@ -30,6 +30,9 @@ class InteractorImplTest {
     @Mock
     lateinit var onSuccess: (List<String>) -> Unit
 
+    @Mock
+    lateinit var onError: (String) -> Unit
+
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
@@ -52,7 +55,7 @@ class InteractorImplTest {
         mockDataSourceStations(dataSource,latt, long, listOf(Station("...",woeid)))
         mockDataSourceMeasurement(dataSource,woeid, Measurement(listOf(Weather(temp)),woeid))
 
-        interactor.getTemps(onSuccess)
+        interactor.getTemps(onSuccess,onError)
         scheduler.triggerActions()
 
         verify(onSuccess).invoke(listOf(temp))

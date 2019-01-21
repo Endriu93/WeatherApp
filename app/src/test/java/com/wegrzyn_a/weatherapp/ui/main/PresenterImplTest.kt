@@ -61,6 +61,6 @@ class PresenterImplTest {
     private fun mockInteractorGetTemps(temps: List<String>) {
         doAnswer { (it.arguments[0] as (List<String>)->Unit).invoke(temps) }.`when`(
             interactor
-        ).getTemps(any())
+        ).getTemps(any(), any())
     }
 }
