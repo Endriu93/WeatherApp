@@ -1,6 +1,5 @@
 package com.wegrzyn_a.weatherapp.ui.main
 
-import android.support.test.espresso.Espresso
 import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.assertion.ViewAssertions
 import android.support.test.espresso.assertion.ViewAssertions.matches
@@ -10,13 +9,15 @@ import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
 import com.wegrzyn_a.weatherapp.R
 import com.wegrzyn_a.weatherapp.any
+import com.wegrzyn_a.weatherapp.mockWeatherAdapterItems
+import com.wegrzyn_a.weatherapp.net.IconUrlFactory
 import com.wegrzyn_a.weatherapp.runOnView
-import com.wegrzyn_a.weatherapp.ui.main.WeatherActivity.Companion.ICON_LOAD_SUCCESS
 import junit.framework.Assert.assertNotNull
 import org.hamcrest.CoreMatchers.`is`
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.standalone.get
 import org.koin.test.KoinTest
 import org.koin.test.declare
 import org.mockito.Mock
@@ -28,7 +29,7 @@ import org.mockito.MockitoAnnotations
 class WeatherActivityUnitTest : KoinTest {
 
     @get:Rule
-    val activityRule = object : ActivityTestRule<WeatherActivity>(WeatherActivity::class.java){
+    val activityRule = object : ActivityTestRule<WeatherActivity>(WeatherActivity::class.java) {
         override fun beforeActivityLaunched() {
             super.beforeActivityLaunched()
             MockitoAnnotations.initMocks(this@WeatherActivityUnitTest)
@@ -40,24 +41,48 @@ class WeatherActivityUnitTest : KoinTest {
     lateinit var presenter: MVP.Presenter
 
     @Test
-    fun testShowTemp() {
-        val temp = "1"
+    fun testShowTemperatureForNextDays() {
+        val iconUrlFactory: IconUrlFactory = get()
+        val adapterItems = mockWeatherAdapterItems(
+            iconUrlFactory, listOf(
+                "1.7" to "sn",
+                "-3.79" to "lr",
+                "-2.575" to "lr",
+                "-1.105" to "lr",
+                "-2.425" to "lr",
+                "-5.46" to "lc"
+            )
+        )
 
-        runOnView(activityRule.activity as MVP.View) { it.showTempForToday(temp) }
+        runOnView(activityRule.activity as MVP.View) { it.showWeathers(adapterItems) }
 
-        Espresso.onView(ViewMatchers.withId(R.id.today_temp))
-            .check(ViewAssertions.matches(ViewMatchers.withText(temp)))
+        adapterItems.forEach {
+            onView(withId(R.id.recycler))
+                .check(ViewAssertions.matches(ViewMatchers.hasDescendant(ViewMatchers.withText(it.temp))))
+        }
     }
 
     @Test
-    fun testPngIconLoadedAfter3s() {
-        val iconUrl = "https://www.metaweather.com/static/img/weather/png/sn.png"
+    fun testShowIconForNextDaysWith3sDelay() {
+        val iconUrlFactory: IconUrlFactory = get()
+        val adapterItems = mockWeatherAdapterItems(
+            iconUrlFactory, listOf(
+                "1.7" to "sn",
+                "-3.79" to "lr",
+                "-2.575" to "lr",
+                "-1.105" to "lr",
+                "-2.425" to "lr",
+                "-5.46" to "lc"
+            )
+        )
 
-        runOnView(activityRule.activity as MVP.View) { it.showIconForToday(iconUrl) }
-
+        runOnView(activityRule.activity as MVP.View) { it.showWeathers(adapterItems) }
         Thread.sleep(3000)
 
-        onView(withTagValue(`is`(ICON_LOAD_SUCCESS as Any))).check(matches(isDisplayed()));
+        adapterItems.forEach {
+            onView(withId(R.id.recycler))
+                .check(ViewAssertions.matches(ViewMatchers.hasDescendant(withTagValue(`is`(it.iconUrl as Any)))))
+        }
     }
 
     @Test

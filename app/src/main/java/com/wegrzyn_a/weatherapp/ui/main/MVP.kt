@@ -1,14 +1,14 @@
 package com.wegrzyn_a.weatherapp.ui.main
 
 import com.wegrzyn_a.weatherapp.data.model.Weather
+import com.wegrzyn_a.weatherapp.ui.main.adapter.WeatherAdapterItem
 import io.reactivex.Single
 
 interface MVP {
     interface View {
         val presenter: Presenter
-        fun showTempForToday(temp: String)
-        fun showIconForToday(iconUrl: String)
         fun showError(error: String)
+        fun showWeathers(items: List<WeatherAdapterItem>)
     }
 
     interface Presenter {

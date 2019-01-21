@@ -1,6 +1,7 @@
 package com.wegrzyn_a.weatherapp.ui.main
 
 import com.wegrzyn_a.weatherapp.net.IconUrlFactory
+import com.wegrzyn_a.weatherapp.ui.main.adapter.WeatherAdapterItem
 import io.reactivex.disposables.CompositeDisposable
 
 
@@ -14,13 +15,16 @@ class PresenterImpl(val interactor: MVP.Interactor, val iconUrlFactory: IconUrlF
         this._view = view
 
         val subscription = interactor.getTempsForNextDays().subscribe(
-            {
-                if (it.size > 0) {
-                    val weather_today = it.get(0)
-                    this._view?.showTempForToday(weather_today.the_temp)
-                    this._view?.showIconForToday(iconUrlFactory.getIconUrl(weather_today.weather_state_abbr))
+            { weather_list ->
+                if (weather_list.size > 0) {
+                    this._view?.showWeathers(weather_list.map { weather ->
+                        WeatherAdapterItem(
+                            weather.the_temp,
+                            iconUrlFactory.getIconUrl(weather.weather_state_abbr)
+                        )
+                    })
                 } else
-                    this._view?.showError("empty temperature list")
+                    this._view?.showError("empty weather list")
             },
             {
                 this._view?.showError(it.message ?: "internal error")

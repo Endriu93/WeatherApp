@@ -7,11 +7,12 @@ import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
-import android.view.View.GONE
-import android.view.View.VISIBLE
+import android.support.v7.widget.LinearLayoutManager
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import com.wegrzyn_a.weatherapp.R
+import com.wegrzyn_a.weatherapp.ui.main.adapter.WeatherAdapter
+import com.wegrzyn_a.weatherapp.ui.main.adapter.WeatherAdapterItem
 import kotlinx.android.synthetic.main.activity_weather.*
 import org.koin.android.ext.android.inject
 import java.lang.Exception
@@ -20,15 +21,21 @@ class WeatherActivity : AppCompatActivity(), MVP.View {
 
     companion object {
         const val REQUEST_FINE_LOCATION = 1
-        const val ICON_LOAD_SUCCESS = 2
-        const val ICON_LOAD_ERROR = 3
     }
 
     override val presenter: MVP.Presenter by inject()
 
+    val adapter = WeatherAdapter(emptyList())
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_weather)
+        initRecycler()
+    }
+
+    private fun initRecycler() {
+        recycler.adapter = adapter
+        recycler.layoutManager = LinearLayoutManager(this)
     }
 
     override fun onStart() {
@@ -46,22 +53,6 @@ class WeatherActivity : AppCompatActivity(), MVP.View {
             presenter.subscribe(this)
     }
 
-    override fun showTempForToday(temp: String) {
-        today_temp.text = temp
-    }
-
-    override fun showIconForToday(iconUrl: String) {
-        Picasso.get().load(iconUrl).into(today_icon,object : Callback{
-            override fun onSuccess() {
-                today_icon.tag = ICON_LOAD_SUCCESS
-            }
-
-            override fun onError(e: Exception?) {
-                today_icon.tag = ICON_LOAD_ERROR
-            }
-        })
-    }
-
     override fun showError(error: String) {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Error")
@@ -70,6 +61,10 @@ class WeatherActivity : AppCompatActivity(), MVP.View {
             dialog.cancel()
         }
         builder.show()
+    }
+
+    override fun showWeathers(items: List<WeatherAdapterItem>) {
+        adapter.loadWeathers(items)
     }
 
     override fun onRequestPermissionsResult(

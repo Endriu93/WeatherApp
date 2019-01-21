@@ -4,6 +4,7 @@ import com.wegrzyn_a.weatherapp.any
 import com.wegrzyn_a.weatherapp.data.model.Weather
 import com.wegrzyn_a.weatherapp.mockInteractorGetTemps
 import com.wegrzyn_a.weatherapp.net.IconUrlFactory
+import com.wegrzyn_a.weatherapp.ui.main.adapter.WeatherAdapterItem
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Before
@@ -48,18 +49,7 @@ class PresenterImplTest {
     }
 
     @Test
-    fun testShowTempForTodayInvokedAfterSubscribe() {
-        val temp = "1"
-        val weather_state_abbr = "sn"
-        mockInteractorGetTemps(interactor,listOf(Weather(temp,weather_state_abbr)))
-
-        presenter.subscribe(view)
-
-        verify(view).showTempForToday(temp)
-    }
-
-    @Test
-    fun testShowIconForTodayInvokedAfterSubscribe() {
+    fun testWeathersForNextDaysInvokedAfterSubscribe() {
         val temp = "1"
         val weather_state_abbr = "sn"
         val generatedIconUrl = "generatedIconUrl"
@@ -68,7 +58,7 @@ class PresenterImplTest {
 
         presenter.subscribe(view)
 
-        verify(view).showIconForToday(generatedIconUrl)
+        verify(view).showWeathers(listOf(WeatherAdapterItem(temp,generatedIconUrl)))
     }
 
     @Test
