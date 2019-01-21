@@ -5,15 +5,15 @@ import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.assertion.ViewAssertions
 import android.support.test.espresso.assertion.ViewAssertions.matches
 import android.support.test.espresso.matcher.ViewMatchers
-import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
-import android.support.test.espresso.matcher.ViewMatchers.withText
+import android.support.test.espresso.matcher.ViewMatchers.*
 import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
 import com.wegrzyn_a.weatherapp.R
 import com.wegrzyn_a.weatherapp.any
 import com.wegrzyn_a.weatherapp.runOnView
+import com.wegrzyn_a.weatherapp.ui.main.WeatherActivity.Companion.ICON_LOAD_SUCCESS
 import junit.framework.Assert.assertNotNull
-import org.junit.Before
+import org.hamcrest.CoreMatchers.`is`
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -22,6 +22,7 @@ import org.koin.test.declare
 import org.mockito.Mock
 import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
+
 
 @RunWith(AndroidJUnit4::class)
 class WeatherActivityUnitTest : KoinTest {
@@ -46,6 +47,17 @@ class WeatherActivityUnitTest : KoinTest {
 
         Espresso.onView(ViewMatchers.withId(R.id.today_temp))
             .check(ViewAssertions.matches(ViewMatchers.withText(temp)))
+    }
+
+    @Test
+    fun testPngIconLoadedAfter3s() {
+        val iconUrl = "https://www.metaweather.com/static/img/weather/png/sn.png"
+
+        runOnView(activityRule.activity as MVP.View) { it.showIconForToday(iconUrl) }
+
+        Thread.sleep(3000)
+
+        onView(withTagValue(`is`(ICON_LOAD_SUCCESS as Any))).check(matches(isDisplayed()));
     }
 
     @Test

@@ -28,7 +28,7 @@ class InteractorImplTest {
     lateinit var locationProvider: LocationProvider
 
     @Mock
-    lateinit var onSuccess: (List<String>) -> Unit
+    lateinit var onSuccess: (List<Weather>) -> Unit
 
     @Mock
     lateinit var onError: (String) -> Unit
@@ -51,14 +51,15 @@ class InteractorImplTest {
         val long = 19.93658
         val woeid = 523920
         val temp = "3"
+        val weather_state_abbreviation = "sn"
         mockLocation(locationProvider,latt,long)
         mockDataSourceStations(dataSource,latt, long, listOf(Station("...",woeid)))
-        mockDataSourceMeasurement(dataSource,woeid, Measurement(listOf(Weather(temp)),woeid))
+        mockDataSourceMeasurement(dataSource,woeid, Measurement(listOf(Weather(temp,weather_state_abbreviation)),woeid))
 
         interactor.getTempsForNextDays().subscribe({onSuccess(it)},{})
         scheduler.triggerActions()
 
-        verify(onSuccess).invoke(listOf(temp))
+        verify(onSuccess).invoke(listOf(Weather(temp,weather_state_abbreviation)))
     }
 
 }

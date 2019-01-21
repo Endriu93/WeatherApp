@@ -1,11 +1,13 @@
 package com.wegrzyn_a.weatherapp.ui.main
 
+import com.wegrzyn_a.weatherapp.data.model.Weather
 import io.reactivex.Single
 
 interface MVP {
     interface View {
         val presenter: Presenter
         fun showTempForToday(temp: String)
+        fun showIconForToday(iconUrl: String)
         fun showError(error: String)
     }
 
@@ -15,7 +17,7 @@ interface MVP {
     }
 
     interface Interactor {
-        fun getTempsForNextDays(): Single<List<String>>
+        fun getTempsForNextDays(): Single<List<Weather>>
         fun unSubscribe()
     }
 }

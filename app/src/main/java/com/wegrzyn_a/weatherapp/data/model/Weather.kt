@@ -1,6 +1,6 @@
 package com.wegrzyn_a.weatherapp.data.model
 
-data class Weather(val the_temp: String)
+data class Weather(val the_temp: String, val weather_state_abbr: String)
 
 /*
 "id": 5146843822424064,

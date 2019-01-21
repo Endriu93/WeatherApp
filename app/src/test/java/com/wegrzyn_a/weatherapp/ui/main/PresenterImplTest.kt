@@ -1,11 +1,14 @@
 package com.wegrzyn_a.weatherapp.ui.main
 
 import com.wegrzyn_a.weatherapp.any
+import com.wegrzyn_a.weatherapp.data.model.Weather
 import com.wegrzyn_a.weatherapp.mockInteractorGetTemps
+import com.wegrzyn_a.weatherapp.net.IconUrlFactory
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
+import org.mockito.ArgumentMatchers
 import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
@@ -18,17 +21,20 @@ class PresenterImplTest {
     @Mock
     lateinit var interactor: MVP.Interactor
 
+    @Mock
+    lateinit var iconUrlFactory: IconUrlFactory
+
     lateinit var presenter: PresenterImpl
 
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        presenter = PresenterImpl(interactor)
+        presenter = PresenterImpl(interactor,iconUrlFactory)
     }
 
     @Test
     fun testSubscribe() {
-        mockInteractorGetTemps(interactor,emptyList<String>())
+        mockInteractorGetTemps(interactor,emptyList<Weather>())
 
         assertNull(presenter._view)
         presenter.subscribe(view)
@@ -42,20 +48,32 @@ class PresenterImplTest {
     }
 
     @Test
-    fun testActionOnSubscribe() {
+    fun testShowTempForTodayInvokedAfterSubscribe() {
         val temp = "1"
-        mockInteractorGetTemps(interactor,listOf(temp))
+        val weather_state_abbr = "sn"
+        mockInteractorGetTemps(interactor,listOf(Weather(temp,weather_state_abbr)))
 
         presenter.subscribe(view)
 
         verify(view).showTempForToday(temp)
     }
 
+    @Test
+    fun testShowIconForTodayInvokedAfterSubscribe() {
+        val temp = "1"
+        val weather_state_abbr = "sn"
+        val generatedIconUrl = "generatedIconUrl"
+        mockInteractorGetTemps(interactor,listOf(Weather(temp,weather_state_abbr)))
+        `when`(iconUrlFactory.getIconUrl(ArgumentMatchers.anyString())).thenReturn(generatedIconUrl)
 
+        presenter.subscribe(view)
+
+        verify(view).showIconForToday(generatedIconUrl)
+    }
 
     @Test
     fun testInteractorReturnsEmptyList() {
-        mockInteractorGetTemps(interactor,emptyList<String>())
+        mockInteractorGetTemps(interactor,emptyList<Weather>())
 
         presenter.subscribe(view)
 

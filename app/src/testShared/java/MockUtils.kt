@@ -4,6 +4,7 @@ import com.wegrzyn_a.weatherapp.data.DataSource
 import com.wegrzyn_a.weatherapp.data.model.LatLng
 import com.wegrzyn_a.weatherapp.data.model.Measurement
 import com.wegrzyn_a.weatherapp.data.model.Station
+import com.wegrzyn_a.weatherapp.data.model.Weather
 import com.wegrzyn_a.weatherapp.sensor.LocationProvider
 import com.wegrzyn_a.weatherapp.ui.main.MVP
 import io.reactivex.Single
@@ -39,8 +40,8 @@ fun mockDataSourceMeasurement(dataSource: DataSource, woeid: Int, measurement: M
     )
 }
 
-fun mockInteractorGetTemps(interactor: MVP.Interactor, temps: List<String>) {
-    `when`(interactor.getTempsForNextDays()).thenReturn(Single.just(temps))
+fun mockInteractorGetTemps(interactor: MVP.Interactor, weathers: List<Weather>) {
+    `when`(interactor.getTempsForNextDays()).thenReturn(Single.just(weathers))
 }
 
 fun mockWebServer(mockServer: MockWebServer, pathToFileList: List<Pair<String, String>>) {

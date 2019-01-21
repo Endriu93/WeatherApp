@@ -5,7 +5,8 @@ import com.wegrzyn_a.weatherapp.data.model.Measurement
 import com.wegrzyn_a.weatherapp.data.model.Station
 import com.wegrzyn_a.weatherapp.mockWebServer
 import okhttp3.mockwebserver.MockWebServer
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Test
 
