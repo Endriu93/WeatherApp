@@ -1,12 +1,19 @@
 package com.wegrzyn_a.weatherapp.ui.main
 
+import android.util.Log
 import com.wegrzyn_a.weatherapp.net.IconUrlFactory
+import com.wegrzyn_a.weatherapp.sensor.LocationNotObtainedException
 import com.wegrzyn_a.weatherapp.ui.main.adapter.WeatherAdapterItem
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.exceptions.CompositeException
 
 
 class PresenterImpl(val interactor: MVP.Interactor, val iconUrlFactory: IconUrlFactory) :
     MVP.Presenter {
+
+    companion object {
+        const val LOG_TAG = "PresenterImpl"
+    }
 
     var _view: MVP.View? = null
     var subscriptions = CompositeDisposable()
@@ -27,7 +34,13 @@ class PresenterImpl(val interactor: MVP.Interactor, val iconUrlFactory: IconUrlF
                     this._view?.showError("empty weather list")
             },
             {
-                this._view?.showError(it.message ?: "internal error")
+                val exception = if(it is CompositeException) it.exceptions.last() else it
+                val error = when(exception){
+                    is LocationNotObtainedException -> "Couldn't get current location!"
+                    else -> "internal error"
+                }
+                this._view?.showError(error);
+                Log.d(LOG_TAG, error, it)
             })
         subscriptions.add(subscription)
     }

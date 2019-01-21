@@ -13,7 +13,7 @@ class LocationProviderImpl(val context: Context) : LocationProvider {
         val locationProvider = ReactiveLocationProvider(context)
         try {
             return locationProvider.lastKnownLocation.map { LatLng(it.latitude, it.longitude) }.observeOn(Schedulers.io())
-                .singleOrError()
+                .singleOrError().doOnError { throw LocationNotObtainedException() }
         } catch (e: SecurityException) {
             throw PermissionNotGrantedException()
         }
